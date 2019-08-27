@@ -83,7 +83,7 @@ def find_restaurants(restaurants, n):
                     "url": resturant_url[i]
                },
                "description": restaurant_address[i],
-               "footer": "Rating : " + restaurant_rating[i] + "\nPhone :" + restaurant_ph[i] ,
+               "footer": "Rating : " + str(restaurant_rating[i]) + "\nPhone :" + restaurant_ph[i] ,
                "image": {
                     "url": restaurant_photo[i],
                     "accessibilityText": restaurant_name[i]
