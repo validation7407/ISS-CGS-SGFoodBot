@@ -5,6 +5,7 @@ from flask import Flask, request, make_response, jsonify
 import requests
 from pandas.io.json import json_normalize
 from geopy.geocoders import Nominatim
+
 geolocator = Nominatim(user_agent="app")
 
 app = Flask(__name__)
@@ -77,7 +78,7 @@ def find_restaurants(restaurants,n):
 #    resturant_url = []
 #    restaurant_rating=[]
 #    
-    restaurant_list = []
+    restaurant_details = {}
     
     for i in range(0,int(n)):
         restaurant_details[i] = {}
@@ -87,8 +88,7 @@ def find_restaurants(restaurants,n):
         restaurant_details[i]['photo'] = restaurants['restaurants'][i]['restaurant']['location']['address']
         restaurant_details[i]['url'] = restaurants['restaurants'][i]['restaurant']['photos_url']
         restaurant_details[i]['rating'] = restaurants['restaurants'][i]['restaurant']['user_rating']['aggregate_rating']
-                              
-        restaurant_list.append(restaurant_details)       
+
 #        restaurant_name.append(restaurants['restaurants'][i]['restaurant']['name'])
 #        restaurant_address.append(restaurants['restaurants'][i]['restaurant']['location']['address'])
 #        restaurant_ph.append(restaurants['restaurants'][i]['restaurant']['phone_numbers'])
