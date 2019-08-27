@@ -78,19 +78,35 @@ def find_restaurants(restaurants, n):
           #        print("Address : ",restaurant_address[i])
           #        print("Phone Number :",restaurant_ph[i])
           final.append({
+
                "title": restaurant_name[i],
+
                "openUrlAction": {
+
                     "url": resturant_url[i]
+
                },
+
                "description": restaurant_address[i],
-               "footer": "Rating : " + str(restaurant_rating[i]) + "\nPhone :" + restaurant_ph[i] ,
+
+               "footer": "Phone :" + restaurant_ph[i],#"Rating : " + str(restaurant_rating[i]) + "\nPhone :" + restaurant_ph[i] ,
+
                "image": {
+
                     "url": restaurant_photo[i],
+
                     "accessibilityText": restaurant_name[i]
+
                }
+
           })  # ,restaurant_ph[i]})
-     final = sorted(final, key = lambda i: i['footer'], reverse = True)
+
+
+    
+     #final = sorted(final, key = lambda i: i['footer'], reverse = True)
+     
      return final
+     
 
 # **********************
 
@@ -116,7 +132,7 @@ def YesCuisineYesLocation(cuisine,location):
     print(lat,long)
     # print(cuisine, cuisine_id, location, location_id)
 #    restaurants = zom.search(entity_id=location_id, entity_type='subzone', cuisines=int(cuisine_id), sort='rating', order='desc')
-    restaurants = zom.search(q = location, cuisines=int(cuisine_id))#, lat = lat, lon = long, sort = 'real_distance', radius = 3000)
+    restaurants = zom.search(q = location, cuisines=int(cuisine_id), lat = lat, lon = long, sort = 'real_distance', radius = 3000)
     number = 10
     n = min(restaurants['results_found'], number)
     result = find_restaurants(restaurants, n)
@@ -141,7 +157,7 @@ def NoCuisineYesLocation(location):
      print(lat,long)
     # print(cuisine, cuisine_id, location, location_id)
 #    restaurants = zom.search(entity_id=location_id, entity_type='subzone', cuisines=int(cuisine_id), sort='rating', order='desc')
-     restaurants = zom.search(q = location)#,  lat = lat, lon = long, sort = 'real_distance', radius = 3000)
+     restaurants = zom.search(q = location,  lat = lat, lon = long, sort = 'real_distance', radius = 3000)
      number = 10
      n = min(restaurants['results_found'], number)
      result = find_restaurants(restaurants, n)
@@ -185,7 +201,7 @@ def SearchQuery(cuisine,location,number):
     if c_flag == 0:
 
         print("Only Location found",number)
-        restaurants = zom.search(q = location)#,  lat = lat, lon = long, sort = 'real_distance', radius = 3000)
+        restaurants = zom.search(q = location,  lat = lat, lon = long, sort = 'real_distance', radius = 3000)
         n = min(restaurants['results_found'], int(number))
         result = find_restaurants(restaurants, n)
         return result
@@ -199,7 +215,7 @@ def SearchQuery(cuisine,location,number):
 
         # print(cuisine, cuisine_id, location, location_id)
 
-        restaurants = zom.search(q = location, cuisines=int(cuisine_id))#, lat = lat, lon = long, sort = 'real_distance', radius = 2000)
+        restaurants = zom.search(q = location, cuisines=int(cuisine_id), lat = lat, lon = long, sort = 'real_distance', radius = 2000)
         n = min(restaurants['results_found'], int(number))
         result = find_restaurants(restaurants, n)
         return result
