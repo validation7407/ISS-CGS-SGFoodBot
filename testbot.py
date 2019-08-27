@@ -116,7 +116,7 @@ def YesCuisineYesLocation(cuisine,location):
     print(lat,long)
     # print(cuisine, cuisine_id, location, location_id)
 #    restaurants = zom.search(entity_id=location_id, entity_type='subzone', cuisines=int(cuisine_id), sort='rating', order='desc')
-    restaurants = zom.search(q = location, cuisines=int(cuisine_id), lat = lat, lon = long, sort = 'real_distance', radius = 2000)
+    restaurants = zom.search(q = location, cuisines=int(cuisine_id), lat = lat, lon = long, sort = 'real_distance', radius = 3000)
     number = 10
     n = min(restaurants['results_found'], number)
     result = find_restaurants(restaurants, n)
@@ -141,7 +141,7 @@ def NoCuisineYesLocation(location):
      print(lat,long)
     # print(cuisine, cuisine_id, location, location_id)
 #    restaurants = zom.search(entity_id=location_id, entity_type='subzone', cuisines=int(cuisine_id), sort='rating', order='desc')
-     restaurants = zom.search(q = location,  lat = lat, lon = long, sort = 'real_distance', radius = 2000)
+     restaurants = zom.search(q = location,  lat = lat, lon = long, sort = 'real_distance', radius = 3000)
      number = 10
      n = min(restaurants['results_found'], number)
      result = find_restaurants(restaurants, n)
@@ -185,7 +185,7 @@ def SearchQuery(cuisine,location,number):
     if c_flag == 0:
 
         print("Only Location found",number)
-        restaurants = zom.search(q = location,  lat = lat, lon = long, sort = 'real_distance', radius = 2000)
+        restaurants = zom.search(q = location,  lat = lat, lon = long, sort = 'real_distance', radius = 3000)
         n = min(restaurants['results_found'], int(number))
         result = find_restaurants(restaurants, n)
         return result
