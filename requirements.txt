@@ -20,3 +20,4 @@ urllib3==1.23
 Werkzeug==0.15.5
 wincertstore==0.2
 zomathon==1.4
+geopy==1.20.0

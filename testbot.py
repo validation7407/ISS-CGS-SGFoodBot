@@ -4,6 +4,8 @@
 from flask import Flask, request, make_response, jsonify
 import requests
 from pandas.io.json import json_normalize
+from geopy.geocoders import Nominatim
+geolocator = Nominatim(user_agent="app")
 
 app = Flask(__name__)
 ## TODO: STEP 1 
@@ -20,8 +22,14 @@ zom = ZomatoAPI(API_KEY)
 #zom.locations(query = "clementi")
 # QUERY WITH LOCATION AND CUISINE
 
-
-
+def getLocationID(location):
+#    location_id = zom.locations(query=location)
+#    location_id = location_id['location_suggestions'][0]['entity_id']
+    location_coord = geolocator.geocode(location)
+#    print(location_coord.address)
+    coord = ((location_coord.latitude, location_coord.longitude))
+    print(coord)
+    return coord
 
 def getjson(url):
     resp =requests.get(url)
@@ -62,34 +70,64 @@ def getCardList(resp_text,n):
 # *****************************
 def find_restaurants(restaurants,n):
     final = []
-    restaurant_name =[]
-    restaurant_address = []
-    restaurant_ph = []
-    restaurant_photo =[]
-    resturant_url = []
+#    restaurant_name =[]
+#    restaurant_address = []
+#    restaurant_ph = []
+#    restaurant_photo =[]
+#    resturant_url = []
+#    restaurant_rating=[]
+#    
+    restaurant_list = []
+    
     for i in range(0,int(n)):
-        restaurant_name.append(restaurants['restaurants'][i]['restaurant']['name'])
-        restaurant_address.append(restaurants['restaurants'][i]['restaurant']['location']['address'])
-        restaurant_ph.append(restaurants['restaurants'][i]['restaurant']['phone_numbers'])
-        restaurant_photo.append(restaurants['restaurants'][i]['restaurant']['photos_url'])
-        resturant_url.append(restaurants['restaurants'][i]['restaurant']['url'])
+        restaurant_details[i] = {}
+        restaurant_details[i]['name'] = restaurants['restaurants'][i]['restaurant']['name']
+        restaurant_details[i]['address'] = restaurants['restaurants'][i]['restaurant']['location']['address']
+        restaurant_details[i]['phone'] = restaurants['restaurants'][i]['restaurant']['phone_numbers']
+        restaurant_details[i]['photo'] = restaurants['restaurants'][i]['restaurant']['location']['address']
+        restaurant_details[i]['url'] = restaurants['restaurants'][i]['restaurant']['photos_url']
+        restaurant_details[i]['rating'] = restaurants['restaurants'][i]['restaurant']['user_rating']['aggregate_rating']
+                              
+        restaurant_list.append(restaurant_details)       
+#        restaurant_name.append(restaurants['restaurants'][i]['restaurant']['name'])
+#        restaurant_address.append(restaurants['restaurants'][i]['restaurant']['location']['address'])
+#        restaurant_ph.append(restaurants['restaurants'][i]['restaurant']['phone_numbers'])
+#        restaurant_photo.append(restaurants['restaurants'][i]['restaurant']['photos_url'])
+#        resturant_url.append(restaurants['restaurants'][i]['restaurant']['url'])
+#        restaurant_rating.append(restaurants['restaurants'][i]['restaurant'][9]['aggregate_rating'])
 #        print("Name :",restaurant_name[i])
 #        print("Address : ",restaurant_address[i])
 #        print("Phone Number :",restaurant_ph[i])
         final.append({
-                  "title": restaurant_name[i],
+                  "title": restaurant_details[i]['name'],
                   "openUrlAction": {
-                    "url": resturant_url[i]
+                    "url": restaurant_details[i]['url']
                   },
-                  "description": restaurant_address[i],
-                  "footer": "Phone :" + restaurant_ph[i],
+                  "description": restaurant_details[i]['address'],
+                  "footer": "Rating :"  + str(restaurant_details[i]['rating']) + "\n" + "Phone :" + restaurant_details[i]['phone'],
                   "image": {
-                    "url": restaurant_photo[i],
-                    "accessibilityText": restaurant_name[i]
+                    "url": restaurant_details[i]['photo'],
+                    "accessibilityText":restaurant_details[i]['name']
                   }
                 })#,restaurant_ph[i]})
+#            
+#        final.append({
+#                  "title": restaurant_name[i],
+#                  "openUrlAction": {
+#                    "url": resturant_url[i]
+#                  },
+#                  "description": restaurant_address[i],
+#                  "footer": "Phone :" + restaurant_ph[i] + "\n" + "Rating :"  + restaurant_rating[i],
+#                  "image": {
+#                    "url": restaurant_photo[i],
+#                    "accessibilityText": restaurant_name[i]
+#                  }
+#                })#,restaurant_ph[i]})
     
-    #print(cuisine,location)    
+    #print(cuisine,location)
+    
+    final = final[0:4]
+    final = sorted(final, key=lambda k: k['footer'],reverse=True)
     return final
 
 def YesCuisineYesLocation(cuisine,location):
@@ -102,8 +140,13 @@ def YesCuisineYesLocation(cuisine,location):
     cuisine_id = df.iloc[0]['cuisine.cuisine_id']
 #    return f"Cuisines is \n{cuisine_name} and ID is {cuisine_id}"
     print(cuisine,cuisine_id,location)
-    
-    restaurants = zom.search(q = location,entity_type="subzone", cuisines = cuisine_id)
+    coord = getLocationID(location)
+    restaurants = zom.search(q = location,
+                             entity_type="subzone",
+                             lat=coord[0],lon=coord[1],
+                             cuisines = cuisine_id,
+                             radius=100,
+                             sort='real_distance')
     number = 10
     n = min(restaurants['results_found'],number)
     print(n)
@@ -116,7 +159,11 @@ def YesCuisineNoLocation(cuisine):
     df = info[info['cuisine.cuisine_name'] == cuisine]
     cuisine_id = df.iloc[0]['cuisine.cuisine_id']
 #    return f"Cuisines is \n{cuisine_name} and ID is {cuisine_id}"
-    restaurants = zom.search(q = "Singapore",entity_id=52,entity_type="city", cuisines = cuisine_id)
+    restaurants = zom.search(q = "Singapore",
+                             entity_id=52,
+                             entity_type="city",
+                             cuisines = cuisine_id,
+                             sort='rating')
     number = 10
     n = min(restaurants['results_found'],number)
     result = find_restaurants(restaurants,n)
@@ -124,7 +171,11 @@ def YesCuisineNoLocation(cuisine):
 
 def NoCuisineYesLocation(location):
 #    return f"Cuisines is \n{cuisine_name} and ID is {cuisine_id}"
-    restaurants = zom.search(q = location,entity_type="subzone")
+    restaurants = zom.search(q = location,
+                             entity_type="subzone",
+                             lat=coord[0],lon=coord[1],
+                             radius=100,
+                             sort='real_distance')
     number = 10
     n = min(restaurants['results_found'],number)
     result = find_restaurants(restaurants,n)
@@ -158,14 +209,23 @@ def SearchQuery(cuisine,location,number):
     
     if flag1 == 0:
         print("Only Location found",number)
-        restaurants = zom.search(q = location,entity_type="subzone")
+        restaurants = zom.search(q = location,
+                             entity_type="subzone",
+                             lat=coord[0],lon=coord[1],
+                             radius=100,
+                             sort='real_distance')
         n = min(restaurants['results_found'],number)
         result = find_restaurants(restaurants,n)
         return result
 
     elif flag1 == 1 and flag2 == 1:
         print("Location and cuisine found",number)
-        restaurants = zom.search(q = location,entity_type="subzone", cuisines = cuisine_id)
+        restaurants = zom.search(q = location,
+                             entity_type="subzone",
+                             lat=coord[0],lon=coord[1],
+                             cuisines = cuisine_id,
+                             radius=100,
+                             sort='real_distance')
         n = min(restaurants['results_found'],number)
         result = find_restaurants(restaurants,n)
         return result
@@ -259,4 +319,4 @@ def webhook():
 # ***************************
 
 if __name__ == '__main__':
-   app.run(debug=False)
+    app.run(debug=False,host="0.0.0.0",port=5000)
