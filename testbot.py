@@ -104,7 +104,7 @@ def find_restaurants(restaurants, n):
 
     
      #final = sorted(final, key = lambda i: i['footer'], reverse = True)
-     
+     print(final)
      return final
      
 
