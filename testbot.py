@@ -268,11 +268,13 @@ def webhook():
         resp_text = "Unable to find a matching intent. Try again."
     
     print(resp_text)
+    
+    l = len(resp_text)
 
     if len(resp_text) != 0:
         return make_response(jsonify({
         "fulfillmentText": "Alright, here's a list of restaurants for you",
-        "fulfillmentMessages": getCardList(resp_text,5),
+        "fulfillmentMessages": getCardList(resp_text,l),
       "payload": {
         "google": {
           "expectUserResponse": True,
