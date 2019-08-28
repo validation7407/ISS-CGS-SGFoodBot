@@ -104,7 +104,7 @@ def find_restaurants(restaurants, n):
 
     
      #final = sorted(final, key = lambda i: i['footer'], reverse = True)
-     print(final)
+     #print(final)
      return final
      
 
@@ -266,6 +266,8 @@ def webhook():
         resp_text = SearchQuery(cuisine,location,number)
     else:
         resp_text = "Unable to find a matching intent. Try again."
+    
+    print(resp_text)
 
     if len(resp_text) != 0:
         return make_response(jsonify({
