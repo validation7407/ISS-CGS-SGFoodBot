@@ -1,6 +1,8 @@
 # SECTION 1: PROJECT TITLE
 SG FoodBot
 --
+![alt text](https://github.com/boonyew/ISS-CS-SGFoodBot/blob/master/poster.png)
+
 # SECTION 2: EXECUTIVE SUMMARY
 Singapore is a popular tourist destination, receiving a large number of visitors from across the world annually. Apart from famous attractions such as the Universal Studios, Marina Bay Sands, it is also home to a large, diverse and unique mix of food cuisines, which is what Singapore is also known for. Tourists in Singapore have a wide range of food options to choose from. However, tourists often have a difficult time choosing a place to have their meals as there are too many choices available and not enough information to guide them in this decision.
 
@@ -54,9 +56,7 @@ Follow below steps to setup SG FoodBot:
 - Navigate to the testing agent on the right-hand side toolbar to test the chatbot. You can also start the chatbot in Google Assistant by entering "Talk to SG Food Bot" or through this link https://assistant.google.com/services/a/uid/00000079f9fd6f18?hl=en, as well as on Telegram by searching for "@sg_foodbot".
 -   Enter questions like :
     -   "I would to go to some Chinese restaurants"
-    -   "Are there any good restaurants in Clementi?" 
+    -   "Best restaurants in Clementi" 
     -   " Top 5 Indian restaurants in Orchard"
 # SECTION 6: PROJECT REPORT
-[https://github.com/aivoyagers/SGFoodBot-Final_Report.pdf](https://github.com/aivoyagers/SGFood-Final_Report..git)
-
-> Written with [StackEdit](https://stackedit.io/).
+[https://github.com/boonyew/ISS-CS-SGFoodBot/blob/master/SGFoodBot_FinalReport_Team7.pdf](https://github.com/boonyew/ISS-CS-SGFoodBot/blob/master/SGFoodBot_FinalReport_Team7..git)
