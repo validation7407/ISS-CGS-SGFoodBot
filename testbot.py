@@ -196,7 +196,7 @@ def SearchQuery(cuisine,location,number):
 
     if number == "":
         number = 10
-    print(cuisine_id,location)
+    #print(cuisine_id,location)
 
     if c_flag == 0:
 
