@@ -57,7 +57,7 @@ SG FoodBot is a Google Assistant and Telegram based Chat Bot Agent using Google 
 2.  Setting up SG FoodBot in Google DialogFlow
 Follow below steps to setup SG FoodBot:
 
--   git clone  [https://github.com/boonyew/SGFoodBot.git](https://github.com/boonyew/SGFoodBot..git)
+-   git clone  [https://github.com/validation7407/ISS-CGS-SGFoodBot.git](https://github.com/validation7407/ISS-CGS-SGFoodBot.git)
 -   Use your web browser to navigate to DialogFlow website  [https://dialogflow.com/](https://dialogflow.com/)
 -   Login to DialogFlow with your Google userid and password
 -   Click 'Go to Console' to enter in to DialogFlow
